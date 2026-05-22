@@ -43,13 +43,21 @@ function resetCalc() {
     operator = '';
 }
 
+function getAnswer() {
+    const numNumber1 = parseInt(number1);
+    const numNumber2 = parseInt(number2);
+    const answer = operate(operator, numNumber1, numNumber2);
+    updateDisplay(String(answer));
+    resetCalc();
+    number1 = answer;
+}
+
 const buttons = document.querySelectorAll('button');
 buttons.forEach((button) => {
     button.addEventListener('click', () => {
         const nonNumbers = '+-x/=';
         const isNumber = !nonNumbers.includes(button.textContent);
         if (isNumber) {
-            console.log(button.textContent)
             if (button.textContent === 'AC') {
                 resetCalc();
                 updateDisplay('');
@@ -66,17 +74,16 @@ buttons.forEach((button) => {
         } else if (button.textContent === '=') {
             const isOperationReady = (number1 != '' && number2 != '' && operator != '');
             if (isOperationReady) {
-                const numNumber1 = parseInt(number1);
-                const numNumber2 = parseInt(number2);
-                const answer = operate(operator, numNumber1, numNumber2);
-                updateDisplay(String(answer));
-                resetCalc();
-                number1 = answer;
+                getAnswer();
             } else {
                 alert('Boi, ts (this) calc (calculator) needs 2 nums and an operator!');
             }
         } else {
-            if (number1 != '') {
+            if (number2 != '') {
+                getAnswer();
+                operator = button.textContent;
+                updateDisplay(`${number1} ${operator} ${number2}`);
+            } else if (number1 != '') {
                 operator = button.textContent;
                 updateDisplay(`${number1} ${operator} ${number2}`);
             } else {
