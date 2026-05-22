@@ -57,10 +57,10 @@ buttons.forEach((button) => {
             }
 
             if (operator != '') {
-                number2 = button.textContent;
+                number2 += button.textContent;
                 updateDisplay(`${number1} ${operator} ${number2}`);
             } else {
-                number1 = button.textContent;
+                number1 += button.textContent;
                 updateDisplay(`${number1}`);
             }
         } else if (button.textContent === '=') {
@@ -71,6 +71,7 @@ buttons.forEach((button) => {
                 const answer = operate(operator, numNumber1, numNumber2);
                 updateDisplay(String(answer));
                 resetCalc();
+                number1 = answer;
             } else {
                 alert('Boi, ts (this) calc (calculator) needs 2 nums and an operator!');
             }
@@ -79,7 +80,7 @@ buttons.forEach((button) => {
                 operator = button.textContent;
                 updateDisplay(`${number1} ${operator} ${number2}`);
             } else {
-                alert('Boi, ts (this) calc (calculator) needs a NEW number first! NEW as in the old answer doesn\'t count!');
+                alert('Boi, ts (this) calc (calculator) needs a number inputted first!');
             }
         }   
     });
