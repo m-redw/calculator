@@ -1,6 +1,7 @@
 let number1 = '';
 let number2 = '';
 let operator = '';
+let justAnswered = false;
 
 function add(num1, num2) {
     return num1 + num2;
@@ -46,10 +47,11 @@ function resetCalc() {
 function getAnswer() {
     const numNumber1 = parseInt(number1);
     const numNumber2 = parseInt(number2);
-    const answer = operate(operator, numNumber1, numNumber2);
+    const answer = Math.round(operate(operator, numNumber1, numNumber2));
     updateDisplay(String(answer));
     resetCalc();
     number1 = answer;
+    justAnswered = true; 
 }
 
 const buttons = document.querySelectorAll('button');
@@ -68,7 +70,12 @@ buttons.forEach((button) => {
                 number2 += button.textContent;
                 updateDisplay(`${number1} ${operator} ${number2}`);
             } else {
-                number1 += button.textContent;
+                if (justAnswered) {
+                    number1 = button.textContent;
+                } else {
+                    number1 += button.textContent;
+                }
+                justAnswered = false;
                 updateDisplay(`${number1}`);
             }
         } else if (button.textContent === '=') {
