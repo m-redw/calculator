@@ -1,5 +1,5 @@
-let number1 = 0;
-let number2 = 0;
+let number1 = '';
+let number2 = '';
 let operator = '';
 
 function add(num1, num2) {
@@ -31,3 +31,16 @@ function operate(op, num1, num2) {
         return 'Please provide appropriate operator';
     }
 }
+
+function updateDisplay() {
+    const display = document.querySelector('.display');
+    display.textContent = `${number1} ${operator} ${number2}`;
+}
+
+const buttons = document.querySelectorAll('button');
+buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+        number1 = button.textContent;
+        updateDisplay();
+    });
+});
