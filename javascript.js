@@ -54,48 +54,57 @@ function getAnswer() {
     justAnswered = true; 
 }
 
-const buttons = document.querySelectorAll('button');
-buttons.forEach((button) => {
+const numberButtons = document.querySelectorAll('.number');
+numberButtons.forEach((button) => {
     button.addEventListener('click', () => {
-        const nonNumbers = '+-x/=';
-        const isNumber = !nonNumbers.includes(button.textContent);
-        if (isNumber) {
-            if (button.textContent === 'AC') {
-                resetCalc();
-                updateDisplay('');
-                return;
-            }
-
-            if (operator != '') {
-                number2 += button.textContent;
-                updateDisplay(`${number1} ${operator} ${number2}`);
-            } else {
-                if (justAnswered) {
-                    number1 = button.textContent;
-                } else {
-                    number1 += button.textContent;
-                }
-                justAnswered = false;
-                updateDisplay(`${number1}`);
-            }
-        } else if (button.textContent === '=') {
-            const isOperationReady = (number1 != '' && number2 != '' && operator != '');
-            if (isOperationReady) {
-                getAnswer();
-            } else {
-                alert('Boi, ts (this) calc (calculator) needs 2 nums and an operator!');
-            }
+        if (operator != '') {
+            number2 += button.textContent;
+            updateDisplay(`${number1} ${operator} ${number2}`);
         } else {
-            if (number2 != '') {
-                getAnswer();
-                operator = button.textContent;
-                updateDisplay(`${number1} ${operator} ${number2}`);
-            } else if (number1 != '') {
-                operator = button.textContent;
-                updateDisplay(`${number1} ${operator} ${number2}`);
+            if (justAnswered) {
+                number1 = button.textContent;
             } else {
-                alert('Boi, ts (this) calc (calculator) needs a number inputted first!');
+                number1 += button.textContent;
             }
-        }   
+            justAnswered = false;
+            updateDisplay(`${number1}`);
+        }
     });
+});
+
+const operatorButtons = document.querySelectorAll('.operator');
+operatorButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+        if (number2 != '') {
+            getAnswer();
+            operator = button.textContent;
+            updateDisplay(`${number1} ${operator} ${number2}`);
+        } else if (number1 != '') {
+            operator = button.textContent;
+            updateDisplay(`${number1} ${operator} ${number2}`);
+        } else {
+            alert('Boi, ts (this) calc (calculator) needs a number inputted first!');
+        }
+    });
+});
+
+const equalButton = document.querySelector('.equal');
+equalButton.addEventListener('click', () => {
+    const isOperationReady = (number1 != '' && number2 != '' && operator != '');
+    if (isOperationReady) {
+        getAnswer();
+    } else {
+        alert('Boi, ts (this) calc (calculator) needs 2 nums and an operator!');
+    }
+})
+
+const dotButton = document.querySelector('.dot');
+
+const undoButton = document.querySelector('.undo');
+
+const ACButton = document.querySelector('.AC');
+ACButton.addEventListener('click', () => {
+    resetCalc();
+    updateDisplay('');
+    return;
 });
