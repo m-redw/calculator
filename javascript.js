@@ -3,6 +3,13 @@ let number2 = '';
 let operator = '';
 let justAnswered = false;
 
+const numberButtons = document.querySelectorAll('.number');
+const operatorButtons = document.querySelectorAll('.operator');
+const equalButton = document.querySelector('.equal');
+const dotButton = document.querySelector('.dot');
+const undoButton = document.querySelector('.undo');
+const ACButton = document.querySelector('.AC');
+
 function add(num1, num2) {
     return num1 + num2;
 }
@@ -45,8 +52,8 @@ function resetCalc() {
 }
 
 function getAnswer() {
-    const numNumber1 = parseInt(number1);
-    const numNumber2 = parseInt(number2);
+    const numNumber1 = Number(number1);
+    const numNumber2 = Number(number2);
     const answer = Math.round(operate(operator, numNumber1, numNumber2));
     updateDisplay(String(answer));
     resetCalc();
@@ -54,7 +61,6 @@ function getAnswer() {
     justAnswered = true; 
 }
 
-const numberButtons = document.querySelectorAll('.number');
 numberButtons.forEach((button) => {
     button.addEventListener('click', () => {
         if (operator != '') {
@@ -72,7 +78,29 @@ numberButtons.forEach((button) => {
     });
 });
 
-const operatorButtons = document.querySelectorAll('.operator');
+dotButton.addEventListener('click', () => {
+    if (operator != '') {
+        if (number2 === '') {
+            number2 = '0.';
+        } else if (!number2.includes('.')) {
+            number2 += '.';
+        }
+        updateDisplay(`${number1} ${operator} ${number2}`);
+    } else {
+        if (justAnswered) {
+            number1 += '.';
+        } else {
+            if (number1 === '') {
+                number1 = '0.';
+            } else if (!number1.includes('.')) {
+                number1 += '.';
+            }
+        }
+        justAnswered = false;
+        updateDisplay(`${number1}`);
+    }
+});
+
 operatorButtons.forEach((button) => {
     button.addEventListener('click', () => {
         if (number2 != '') {
@@ -88,7 +116,6 @@ operatorButtons.forEach((button) => {
     });
 });
 
-const equalButton = document.querySelector('.equal');
 equalButton.addEventListener('click', () => {
     const isOperationReady = (number1 != '' && number2 != '' && operator != '');
     if (isOperationReady) {
@@ -98,13 +125,7 @@ equalButton.addEventListener('click', () => {
     }
 })
 
-const dotButton = document.querySelector('.dot');
-
-const undoButton = document.querySelector('.undo');
-
-const ACButton = document.querySelector('.AC');
 ACButton.addEventListener('click', () => {
     resetCalc();
     updateDisplay('');
-    return;
 });
