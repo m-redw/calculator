@@ -57,28 +57,43 @@ function getAnswer() {
     const answer = Math.round(operate(operator, numNumber1, numNumber2));
     updateDisplay(String(answer));
     resetCalc();
-    number1 = answer;
+    number1 = String(answer);
     justAnswered = true; 
 }
 
-numberButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-        if (operator != '') {
-            number2 += button.textContent;
-            updateDisplay(`${number1} ${operator} ${number2}`);
+function inputNumber(num) {
+    if (operator != '') {
+        number2 += num;
+        updateDisplay(`${number1} ${operator} ${number2}`);
+    } else {
+        if (justAnswered) {
+            number1 = num;
         } else {
-            if (justAnswered) {
-                number1 = button.textContent;
-            } else {
-                number1 += button.textContent;
-            }
-            justAnswered = false;
-            updateDisplay(`${number1}`);
+            number1 += num;
         }
-    });
-});
+        justAnswered = false;
+        updateDisplay(`${number1}`);
+    }
+}
 
-dotButton.addEventListener('click', () => {
+function inputOperator(op) {
+    if (op === '*') {
+        op = 'x';
+    }
+
+    if (number2 != '') {
+        getAnswer();
+        operator = op;
+        updateDisplay(`${number1} ${operator} ${number2}`);
+    } else if (number1 != '') {
+        operator = op;
+        updateDisplay(`${number1} ${operator} ${number2}`);
+    } else {
+        alert('Boi, ts (this) calc (calculator) needs a number inputted first!');
+    }
+}
+
+function inputDot() {
     if (operator != '') {
         if (number2 === '') {
             number2 = '0.';
@@ -99,42 +114,23 @@ dotButton.addEventListener('click', () => {
         justAnswered = false;
         updateDisplay(`${number1}`);
     }
-});
+}
 
-operatorButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-        if (number2 != '') {
-            getAnswer();
-            operator = button.textContent;
-            updateDisplay(`${number1} ${operator} ${number2}`);
-        } else if (number1 != '') {
-            operator = button.textContent;
-            updateDisplay(`${number1} ${operator} ${number2}`);
-        } else {
-            alert('Boi, ts (this) calc (calculator) needs a number inputted first!');
-        }
-    });
-});
-
-equalButton.addEventListener('click', () => {
+function inputEqual() {
     const isOperationReady = (number1 != '' && number2 != '' && operator != '');
     if (isOperationReady) {
         getAnswer();
     } else {
         alert('Boi, ts (this) calc (calculator) needs 2 nums and an operator!');
     }
-})
+}
 
-ACButton.addEventListener('click', () => {
-    resetCalc();
-    updateDisplay('');
-});
-
-undoButton.addEventListener('click', () => {
+function inputUndo() {
     const isOnNum1 = (operator === '');
     const isOnOperator = (number2 === '');
 
     if (isOnNum1 && number1 != '') {
+        console.log(number1)
         number1 = number1.slice(0, -1);
         updateDisplay(`${number1}`);
     } else if (isOnOperator && operator != '') {
@@ -144,5 +140,56 @@ undoButton.addEventListener('click', () => {
         number2 = number2.slice(0, -1);
         updateDisplay(`${number1} ${operator} ${number2}`);
     }
+}
 
+
+// buttons
+numberButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+        inputNumber(button.textContent);
+    });
+});
+
+dotButton.addEventListener('click', () => {
+    inputDot();
+});
+
+operatorButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+        inputOperator(button.textContent);
+    });
+});
+
+equalButton.addEventListener('click', () => {
+    inputEqual();
+})
+
+ACButton.addEventListener('click', () => {
+    resetCalc();
+    updateDisplay('');
+});
+
+undoButton.addEventListener('click', () => {
+    inputUndo();
+});
+
+
+// keyboard support
+document.addEventListener('keydown', (event) => {
+    console.log(event.key)
+
+    const numbers = '1234567890';
+    const operators = '-+/x*';
+
+    if (numbers.includes(event.key)) {
+        inputNumber(event.key);
+    } else if (operators.includes(event.key)) {
+        inputOperator(event.key);
+    } else if (event.key === '.') {
+        inputDot();
+    } else if (event.key === '=' || event.key === 'Enter') {
+        inputEqual();
+    } else if (event.key === 'Backspace') {
+        inputUndo();
+    }
 });
