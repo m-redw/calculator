@@ -129,3 +129,20 @@ ACButton.addEventListener('click', () => {
     resetCalc();
     updateDisplay('');
 });
+
+undoButton.addEventListener('click', () => {
+    const isOnNum1 = (operator === '');
+    const isOnOperator = (number2 === '');
+
+    if (isOnNum1 && number1 != '') {
+        number1 = number1.slice(0, -1);
+        updateDisplay(`${number1}`);
+    } else if (isOnOperator && operator != '') {
+        operator = '';
+        updateDisplay(`${number1} ${operator}`);
+    } else if (number2 != ''){
+        number2 = number2.slice(0, -1);
+        updateDisplay(`${number1} ${operator} ${number2}`);
+    }
+
+});
