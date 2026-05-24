@@ -60,6 +60,14 @@ button {
     font-weight: bold;
 }
 
+.button-hover {
+    background-color: rgb(165, 165, 165);
+}
+
+.button-press {
+    background-color: rgb(114, 114, 114);
+}
+
 .button-row {
     display: flex;
     justify-content: space-between;

@@ -193,3 +193,25 @@ document.addEventListener('keydown', (event) => {
         inputUndo();
     }
 });
+
+
+
+//button effects
+const buttons = document.querySelectorAll("button");
+buttons.forEach((button) => {
+    button.addEventListener('mouseenter', () => {
+        button.classList.add('button-hover');
+    });
+
+    button.addEventListener('mouseleave', () => {
+        button.classList.remove('button-hover');
+    });
+
+    button.addEventListener('mousedown', () => {
+        button.classList.add('button-press');
+    });
+
+    button.addEventListener('mouseup', () => {
+        button.classList.remove('button-press');
+    });
+});
