@@ -70,3 +70,9 @@ button {
     justify-content: flex-end;
     gap: 10px;
 }
+
+p {
+    margin: 5px auto 0px;
+    height: 20px;
+    font-family: "Audiowide", sans-serif;
+}
