@@ -55,7 +55,14 @@ function getAnswer() {
     const numNumber1 = Number(number1);
     const numNumber2 = Number(number2);
     const answer = Math.round(operate(operator, numNumber1, numNumber2));
-    updateDisplay(String(answer));
+    const strAnswer = String(answer);
+
+    if (strAnswer === 'Infinity' || strAnswer === 'NaN') {
+        updateDisplay('Undefined');
+    } else {
+        updateDisplay(strAnswer);
+    }
+    
     resetCalc();
     number1 = String(answer);
     justAnswered = true; 
